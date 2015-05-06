@@ -71,7 +71,7 @@ var app = angular.module('mingroom', ['ionic','firebase'])
       url: '/account',
       views: {
         'account': {
-          templateUrl: 'templates/account/index.html',
+          templateUrl: 'templates/account/about.html',
           controller: 'AccountCtrl'
         }
       }

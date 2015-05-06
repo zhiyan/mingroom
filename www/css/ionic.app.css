@@ -7693,6 +7693,13 @@ a.button {
   .tag.tag-assertive {
     background: #ef473a; }
 
+.page-about {
+  padding: 30px 10px; }
+  .page-about .title {
+    padding-left: 20px;
+    border-left: 3px solid #333;
+    margin-top: 20px; }
+
 .item-label {
   width: 80px;
   text-align: right;
