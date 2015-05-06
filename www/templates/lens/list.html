@@ -1,17 +1,16 @@
 <ion-view title="镜头" class="main-view">
   <ion-content class="has-header">
-	  <div class="list">
-	    <a class="item item-thumbnail-left" href="javascript:void(0)" ng-click="go(key)" ng-repeat="(key,one) in data">
-	     <img src="{{one.imageUrl}}" style="width:80px;height:60px;">
-        <h2>{{one.name}}</h2>
-        <p class="tag-wrap">
+  <div class="list card main-list-card" ng-if="data" ng-repeat="(key,one) in data">
+    <a class="item item-avatar" ng-click="go(key)" href="javascript:void(0)">
+      <img src="{{one.imageUrl}}">
+      <h2>{{one.name}}</h2>
+      <p class="tag-wrap">
           <span class="tag" ng-if="one.usage">{{one.usage}}</span>
           <span class="tag" ng-if="one.purpose">{{one.purpose}}</span>
           <span class="tag" ng-if="one.maxAperture">{{one.maxAperture}} - {{one.minAperture}}</span> 
-          <span class="tag tag-assertive" ng-if="one.price">&yen; {{one.price}}</span>
-        </p>
-      </a> 
-	</div>
+          <span class="tag tag-assertive" ng-if="one.price">&yen; {{one.price}}</span></p>
+    </a>
+  </div>
   <ion-infinite-scroll
     on-infinite="refresh()"
     distance="1%">
