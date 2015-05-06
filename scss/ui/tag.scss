@@ -1,0 +1,20 @@
+.tag-wrap{
+	white-space: normal !important;
+	.tag{
+		margin-bottom: 5px;
+	}
+}
+.tag{
+	display: inline-block;
+	padding:0 5px;
+	border-radius: 3px;
+	background:#e6db70;
+	color:#fff;
+	font-size:12px;
+	font-family:"宋体";
+	border-color:#e6db70;
+	margin-right: 5px;
+	&.tag-assertive{
+		background:#ef473a;
+	}
+}

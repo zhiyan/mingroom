@@ -8,10 +8,11 @@ var rename = require('gulp-rename');
 var sh = require('shelljs');
 
 var paths = {
-  sass: ['./scss/**/*.scss']
+  sass: ['./scss/**/*.scss'],
+  js: ['./www/src/**/*.js']
 };
 
-gulp.task('default', ['sass']);
+gulp.task('default', ['sass','js']);
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
@@ -27,8 +28,24 @@ gulp.task('sass', function(done) {
     .on('end', done);
 });
 
+gulp.task('js', function(done) {
+  // app
+  gulp.src('./www/src/app.js')
+    .pipe(gulp.dest('./www/js/'))
+  // controller
+  gulp.src('./www/src/controllers/*.js')
+    .pipe(concat('controllers.js'))
+    .pipe(gulp.dest('./www/js/'))
+  // services
+  gulp.src('./www/src/services/*.js')
+    .pipe(concat('services.js'))
+    .pipe(gulp.dest('./www/js/'))
+    .on('end', done);
+});
+
 gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.js, ['js']);
 });
 
 gulp.task('install', ['git-check'], function() {
