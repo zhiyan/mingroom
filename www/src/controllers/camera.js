@@ -29,10 +29,16 @@ app.controller('CameraCtrl', function($http,$scope,$state,$rootScope,$fireQuery,
     }
 
     $scope.$on("tab.camera.searchTextChange",function( obj, text ){
-    	$fireQuery("camera",text,function(res){
-    		$scope.data = res;
-    		$scope.$digest();
-    	})
+    	if( !text ){
+    		$scope.total = 0;
+    		limit = 0;
+    		$scope.refresh();
+    	}else{
+	    	$fireQuery("camera",text,function(res){
+	    		$scope.data = res;
+	    		$scope.$digest();
+	    	})
+    	}
     })
 
 })

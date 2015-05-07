@@ -1,7 +1,15 @@
 app.factory("$fireQuery", function($data){
 	return function(type,text,cb){
 
-		var res = [];
+		var res = [],
+			params = {
+				"query" : {
+					"query_string" : {
+						"default_field" : "name",
+						"query" : "*"+escapeText(text)+"*",
+					}
+				}
+			};
 
 	    var queue = $data.child("search");
 
@@ -10,6 +18,7 @@ app.factory("$fireQuery", function($data){
 	       var key = queue.child('request').push({ index: index, type: type, query: searchTerm }).key();
 
 	       queue.child('response/'+key).on('value', function fn(snap) {
+	       	console.log(snap.val())
 	          if( snap.val() !== null ) {     // wait for data
 	             snap.ref().off('value', fn); // stop listening
 	             snap.ref().remove();         // clear the queue
@@ -18,7 +27,12 @@ app.factory("$fireQuery", function($data){
 	       });
 	    }
 
-	    search('firebase', type, {"query_string" : {"query":"*"+text+"*"}}, function(data) {
+	    function escapeText(text){
+	    	return text.replace(/-/g," AND ");
+	    	// return text.replace(/([-+&|?*~^\[\]\(\)])/g,"\\$1");
+	    }
+
+	    search('firebase', type, params, function(data) {
 	        if( data.hits ) {
 	           data.hits.forEach(function(hit) {
 	           	  var one = hit._source;

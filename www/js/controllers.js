@@ -34,10 +34,16 @@ app.controller('CameraCtrl', function($http,$scope,$state,$rootScope,$fireQuery,
     }
 
     $scope.$on("tab.camera.searchTextChange",function( obj, text ){
-    	$fireQuery("camera",text,function(res){
-    		$scope.data = res;
-    		$scope.$digest();
-    	})
+    	if( !text ){
+    		$scope.total = 0;
+    		limit = 0;
+    		$scope.refresh();
+    	}else{
+	    	$fireQuery("camera",text,function(res){
+	    		$scope.data = res;
+	    		$scope.$digest();
+	    	})
+    	}
     })
 
 })
@@ -78,7 +84,7 @@ app.controller('CameraDetailCtrl', function($http,$scope,$state,$rootScope,$ioni
 
 	$scope.reset = function(){
 		$scope.list[$scope.key].text = "";
-		$scope.list[$scope.key].hasFilters = false;
+		$scope.submit("");
 	}
 
 	$rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
@@ -109,7 +115,6 @@ app.controller('LensCtrl', function($http,$scope,$state,$rootScope,$fireQuery,$i
 		arr.$loaded(function(data){
 			$scope.loaded = true;
 			$scope.data = arr;
-			console.log(arr)
 			$scope.$broadcast('scroll.infiniteScrollComplete');
 			$ionicLoading.hide();
 		})
@@ -126,10 +131,16 @@ app.controller('LensCtrl', function($http,$scope,$state,$rootScope,$fireQuery,$i
     }
 
     $scope.$on("tab.lens.searchTextChange",function( obj, text ){
-    	$fireQuery("lens",text,function(res){
-    		$scope.data = res;
-    		$scope.$digest();
-    	})
+    	if( !text ){
+    		$scope.total = 0;
+    		limit = 0;
+    		$scope.refresh();
+    	}else{
+	    	$fireQuery("lens",text,function(res){
+	    		$scope.data = res;
+	    		$scope.$digest();
+	    	})
+    	}
     })
 
 })

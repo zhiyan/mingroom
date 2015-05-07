@@ -16,7 +16,7 @@
 
 	$scope.reset = function(){
 		$scope.list[$scope.key].text = "";
-		$scope.list[$scope.key].hasFilters = false;
+		$scope.submit("");
 	}
 
 	$rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){

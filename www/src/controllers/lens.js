@@ -14,7 +14,6 @@ app.controller('LensCtrl', function($http,$scope,$state,$rootScope,$fireQuery,$i
 		arr.$loaded(function(data){
 			$scope.loaded = true;
 			$scope.data = arr;
-			console.log(arr)
 			$scope.$broadcast('scroll.infiniteScrollComplete');
 			$ionicLoading.hide();
 		})
@@ -31,10 +30,16 @@ app.controller('LensCtrl', function($http,$scope,$state,$rootScope,$fireQuery,$i
     }
 
     $scope.$on("tab.lens.searchTextChange",function( obj, text ){
-    	$fireQuery("lens",text,function(res){
-    		$scope.data = res;
-    		$scope.$digest();
-    	})
+    	if( !text ){
+    		$scope.total = 0;
+    		limit = 0;
+    		$scope.refresh();
+    	}else{
+	    	$fireQuery("lens",text,function(res){
+	    		$scope.data = res;
+	    		$scope.$digest();
+	    	})
+    	}
     })
 
 })
