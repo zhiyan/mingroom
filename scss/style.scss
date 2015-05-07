@@ -2,3 +2,14 @@
 
 @import "./page/main";
 @import "./page/about";
+
+.search-hide{
+	display: none;
+}
+.empty-result{
+	width: 100%;
+	font-size:16px;
+	text-align: center;
+	padding:20px 0;
+	color:#ccc;
+}

@@ -1,8 +1,9 @@
-app.controller('CameraCtrl', function($http,$scope,$state,$rootScope,$ionicLoading,$firebaseArray,$data) {
+app.controller('CameraCtrl', function($http,$scope,$state,$rootScope,$fireQuery,$ionicLoading,$firebaseArray,$data) {
 	var limit = 0, // 下拉刷新限制条数
 		step = 10; //下拉刷新递进条数
 
 	$scope.total = 0;
+	$scope.loaded = false;
 
 	var ref = $data.child("camera").orderByKey();
 
@@ -10,6 +11,7 @@ app.controller('CameraCtrl', function($http,$scope,$state,$rootScope,$ionicLoadi
 		limit += step;
 		var arr = $firebaseArray(ref.limitToFirst( limit ));
 		arr.$loaded(function(data){
+			$scope.loaded = true;
 			$scope.data = arr;
 			$scope.$broadcast('scroll.infiniteScrollComplete');
 			$ionicLoading.hide();
@@ -25,6 +27,13 @@ app.controller('CameraCtrl', function($http,$scope,$state,$rootScope,$ionicLoadi
     		id:key
     	});
     }
+
+    $scope.$on("tab.camera.searchTextChange",function( obj, text ){
+    	$fireQuery("camera",text,function(res){
+    		$scope.data = res;
+    		$scope.$digest();
+    	})
+    })
 
 })
 

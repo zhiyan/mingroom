@@ -1,7 +1,3 @@
-app.factory("$data", function(){
-	return new Firebase("https://mingshi.firebaseio.com/");
-});
-
 app.factory("$fireQuery", function($data){
 	return function(type,text,cb){
 

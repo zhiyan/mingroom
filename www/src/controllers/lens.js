@@ -1,8 +1,10 @@
-app.controller('LensCtrl', function($http,$scope,$state,$rootScope,$ionicLoading,$firebaseArray,$data) {
+app.controller('LensCtrl', function($http,$scope,$state,$rootScope,$fireQuery,$ionicLoading,$firebaseArray,$data) {
 	var limit = 0, // 下拉刷新限制条数
 		step = 10; //下拉刷新递进条数
 
-	$scope.total = 0;
+	$scope.total = 0;	
+	$scope.loaded = false;
+
 
 	var ref = $data.child("lens").orderByKey();
 
@@ -10,7 +12,9 @@ app.controller('LensCtrl', function($http,$scope,$state,$rootScope,$ionicLoading
 		limit += step;
 		var arr = $firebaseArray(ref.limitToFirst( limit ));
 		arr.$loaded(function(data){
+			$scope.loaded = true;
 			$scope.data = arr;
+			console.log(arr)
 			$scope.$broadcast('scroll.infiniteScrollComplete');
 			$ionicLoading.hide();
 		})
@@ -25,6 +29,13 @@ app.controller('LensCtrl', function($http,$scope,$state,$rootScope,$ionicLoading
     		id:key
     	});
     }
+
+    $scope.$on("tab.lens.searchTextChange",function( obj, text ){
+    	$fireQuery("lens",text,function(res){
+    		$scope.data = res;
+    		$scope.$digest();
+    	})
+    })
 
 })
 

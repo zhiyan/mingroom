@@ -3,11 +3,12 @@ app.controller('AccountCtrl', function($http,$scope,$state,$rootScope) {
 })
 
 
-app.controller('CameraCtrl', function($http,$scope,$state,$rootScope,$ionicLoading,$firebaseArray,$data) {
+app.controller('CameraCtrl', function($http,$scope,$state,$rootScope,$fireQuery,$ionicLoading,$firebaseArray,$data) {
 	var limit = 0, // 下拉刷新限制条数
 		step = 10; //下拉刷新递进条数
 
 	$scope.total = 0;
+	$scope.loaded = false;
 
 	var ref = $data.child("camera").orderByKey();
 
@@ -15,6 +16,7 @@ app.controller('CameraCtrl', function($http,$scope,$state,$rootScope,$ionicLoadi
 		limit += step;
 		var arr = $firebaseArray(ref.limitToFirst( limit ));
 		arr.$loaded(function(data){
+			$scope.loaded = true;
 			$scope.data = arr;
 			$scope.$broadcast('scroll.infiniteScrollComplete');
 			$ionicLoading.hide();
@@ -30,6 +32,13 @@ app.controller('CameraCtrl', function($http,$scope,$state,$rootScope,$ionicLoadi
     		id:key
     	});
     }
+
+    $scope.$on("tab.camera.searchTextChange",function( obj, text ){
+    	$fireQuery("camera",text,function(res){
+    		$scope.data = res;
+    		$scope.$digest();
+    	})
+    })
 
 })
 
@@ -52,15 +61,45 @@ app.controller('CameraDetailCtrl', function($http,$scope,$state,$rootScope,$ioni
 
 
 .controller('HeaderCtrl', function($http,$scope,$rootScope,$state,$timeout) {
-	// $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams){
 
-	// });
+	$scope.list = {
+		'tab.camera' : {'placeholder' : '查找相机...','text':'','hasFilters':false},
+		'tab.lens' : {'placeholder' : '查找镜头...','text':'','hasFilters':false},
+	};
+
+	$scope.submit = function( text ){
+		if( !!text ){
+			$scope.list[$scope.key].hasFilters = true;
+		}else{
+			$scope.list[$scope.key].hasFilters = false;
+		}
+		$rootScope.$broadcast( $scope.key + ".searchTextChange",text);
+	}
+
+	$scope.reset = function(){
+		$scope.list[$scope.key].text = "";
+		$scope.list[$scope.key].hasFilters = false;
+	}
+
+	$rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
+		
+        $scope.search = false;
+
+        if ( toState.name in $scope.list  ) {
+            $scope.search = true;
+            $scope.key = toState.name;
+        }
+	});
+
+
 })
-app.controller('LensCtrl', function($http,$scope,$state,$rootScope,$ionicLoading,$firebaseArray,$data) {
+app.controller('LensCtrl', function($http,$scope,$state,$rootScope,$fireQuery,$ionicLoading,$firebaseArray,$data) {
 	var limit = 0, // 下拉刷新限制条数
 		step = 10; //下拉刷新递进条数
 
-	$scope.total = 0;
+	$scope.total = 0;	
+	$scope.loaded = false;
+
 
 	var ref = $data.child("lens").orderByKey();
 
@@ -68,7 +107,9 @@ app.controller('LensCtrl', function($http,$scope,$state,$rootScope,$ionicLoading
 		limit += step;
 		var arr = $firebaseArray(ref.limitToFirst( limit ));
 		arr.$loaded(function(data){
+			$scope.loaded = true;
 			$scope.data = arr;
+			console.log(arr)
 			$scope.$broadcast('scroll.infiniteScrollComplete');
 			$ionicLoading.hide();
 		})
@@ -83,6 +124,13 @@ app.controller('LensCtrl', function($http,$scope,$state,$rootScope,$ionicLoading
     		id:key
     	});
     }
+
+    $scope.$on("tab.lens.searchTextChange",function( obj, text ){
+    	$fireQuery("lens",text,function(res){
+    		$scope.data = res;
+    		$scope.$digest();
+    	})
+    })
 
 })
 
@@ -107,9 +155,11 @@ app.controller('LensDetailCtrl', function($http,$scope,$state,$rootScope,$ionicL
 app.controller('TabsCtrl', function($scope, $rootScope, $state) {
         $rootScope.$on('$ionicView.beforeEnter', function() {
 
+        	var hides = ['tab.cameraDetail','tab.lensDetail'];
+
             $rootScope.hideTabs = false;
 
-            if ($state.current.name === 'tab.cameraDetail') {
+            if ( ~hides.indexOf( $state.current.name )  ) {
                 $rootScope.hideTabs = true;
             }
         });

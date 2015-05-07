@@ -26,9 +26,17 @@
   </head>
   <body ng-app="mingroom" animation="slide-left-right-ios7" ng-cloak>
 
-    <ion-nav-bar class="bar-light">
+    <ion-nav-bar class="bar-light" ng-controller="HeaderCtrl">
         <ion-nav-back-button>后退
         </ion-nav-back-button>
+        
+        <div ng-class="{'search-hide':!search}" class="bar bar-header item-input-inset" style="position: absolute;z-index: 11;">
+          <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+            <input type="search" placeholder="{{list[key].placeholder}}" ng-model="list[key].text" ng-change="submit(list[key].text)">
+          </label>
+          <a data-tap-disabled="true" class="button button-icon icon positive button-clear" ng-class="{'ion-search':!list[key].hasFilters,'ion-close-circled':list[key].hasFilters}" ng-click="reset()"></a>
+        </div>
     </ion-nav-bar>
 
     <ion-nav-view animation="nav-title-slide-ios7"></ion-nav-view>

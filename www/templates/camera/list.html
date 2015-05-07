@@ -1,7 +1,10 @@
 <ion-view title="相机" class="main-view">
+
+  <ion-nav-title ng-show="false"></ion-nav-title>
+
   <ion-content class="has-header">
-    <div class="list card main-list-card" ng-if="data" ng-repeat="(key,one) in data">
-      <a class="item item-avatar" ng-click="go(key)" href="javascript:void(0)">
+    <div class="list card main-list-card" ng-if="data" ng-repeat="one in data">
+      <a class="item item-avatar" ng-click="go(one.$id)" href="javascript:void(0)">
         <img src="{{one.imageUrl}}">
         <h2>{{one.name}}</h2>
         <p class="tag-wrap">
@@ -12,6 +15,7 @@
         </p>
       </a>
     </div>
+    <div class="empty-result" ng-if="!data.length && loaded">没有找到结果</div>
     <ion-infinite-scroll
       on-infinite="refresh()"
       distance="1%">
