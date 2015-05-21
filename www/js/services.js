@@ -32,7 +32,7 @@ app.factory("$fireQuery", function($data){
 	    }
 
 	    function escapeText(text){
-	    	return text.replace(/-/g," AND ");
+	    	return text.replace(/[-\/\s]/g," AND ");
 	    	// return text.replace(/([-+&|?*~^\[\]\(\)])/g,"\\$1");
 	    }
 

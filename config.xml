@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.mingroom569546" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>mingroom</name>
+<widget id="com.mingroom.mingroom" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>明室</name>
   <description>
-        An Ionic Framework and Cordova project.
+        摄影器材查询平台
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
-    </author>
+  <author email="zhiyan1987@outlook.com" href="http://www.ianzoe.com/">之彦</author>
   <content src="index.html"/>
   <access origin="*"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="BackupWebStorage" value="none"/>
+  <preference name="SplashScreen" value="screen" /> <!-- 不带后缀png的文件名，默认是screen-->
+  <preference name="SplashScreenDelay" value="10000" /> <!-- Splash显示时间，默认是3000ms-->
+  <preference name="AutoHideSplashScreen" value="false" />
+  <preference name="ShowSplashScreenSpinner" value="false" />
+  <preference name="auto-hide-splash-screen" value="false" />
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
+  </feature>
+  <feature name="SplashScreen">
+    <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
   </feature>
 </widget>

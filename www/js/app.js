@@ -2,6 +2,13 @@
 var app = angular.module('mingroom', ['ionic','firebase'])
 
 .run(function($ionicPlatform) {
+
+  $ionicPlatform.ready(function() {
+    setTimeout(function() {
+        navigator.splashscreen.hide();
+    }, 100);
+ });
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
