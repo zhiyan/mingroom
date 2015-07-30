@@ -22,7 +22,6 @@ app.factory("$fireQuery", function($data){
 	       var key = queue.child('request').push({ index: index, type: type, query: searchTerm }).key();
 
 	       queue.child('response/'+key).on('value', function fn(snap) {
-	       	console.log(snap.val())
 	          if( snap.val() !== null ) {     // wait for data
 	             snap.ref().off('value', fn); // stop listening
 	             snap.ref().remove();         // clear the queue
